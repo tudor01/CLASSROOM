@@ -69,3 +69,150 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+.classroom {
+    width: 300px;
+    height: 300px;
+    border: .0625rem solid #dadce0;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    margin: 2rem 2rem 2rem 0rem;
+}
+
+    .classroom:hover {
+        transform: scale(102%, 102%);
+    }
+
+.header-classroom {
+    height: 100px;
+    padding: 0.7rem 1rem;
+    color: white;
+    background: grey;
+}
+
+.title-classroom{
+    font-size: 1.5rem;
+    color: inherit;
+}
+
+.title-classroom:hover{
+    color: inherit;
+}
+
+.owner-name-classroom{
+    font-size: 0.9rem;
+    padding-top: 1rem;
+}
+
+.body-classroom {
+    height: 150px;
+    border: .0625rem solid #dadce0;
+}
+
+.footer-classroom {
+    height: 50px;
+    padding-right: 1rem;
+    display: flex;
+    float: right;
+}
+
+.icon-container {
+    height: 90vh;
+    width: 3rem;
+    padding: 0.75rem 0.8rem;
+}
+
+    .icon-container:hover {
+        background: #edebe6;
+    }
+
+
+.folder {
+    width: 300px;
+    height: 300px;
+    background: yellow;
+}
+
+.classroom-main-title {
+    width: 60rem;
+    height: 15rem;
+    background: grey;
+    margin: auto;
+    border-radius: 0.8rem;
+    padding: 2rem 2rem;
+    color: white;
+}
+
+.classroom-name {
+    font-size: 2rem;
+}
+
+.classroom-main-title a{
+    color: white;
+    cursor: pointer;
+}
+
+.classroom-container {
+    width: 60rem;
+    margin: auto;
+    margin-top: 2rem;
+    display: flex;
+}
+
+.upcoming-assigments {
+    width: 13rem;
+    min-height: 9rem;
+    border-radius: 0.8rem;
+    border: .0625rem solid #dadce0;
+    padding: 1rem;
+    max-height: 10rem;
+}
+
+.upcoming-text {
+    color: #3c4043;
+}
+
+.woohoo {
+    color: rgba(0,0,0,0.549);
+    font-size: 0.85rem;
+    margin: 1rem 0rem;
+}
+
+.view-all-assigments{
+    float: right;
+    color: #3c4043;
+}
+
+.view-all-assigments:hover{
+    color: grey;
+    cursor: pointer;
+}
+
+.item-stream {
+    width: 45rem;
+    min-height: 4.5rem;
+    margin-left: 2rem;
+    border-radius: 0.8rem;
+    border: .0625rem solid #dadce0;
+    cursor: pointer;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+    .item-stream:hover {
+        background: #edebe6;
+    }
+
+.title-assigment {
+    color: #3c4043;
+}
+
+.date-assigment {
+    color: #5f6368;
+    font-size: 0.85rem; 
+}
+
+.people-container{
+    margin-left: 10rem;
+}

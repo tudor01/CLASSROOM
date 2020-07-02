@@ -1,0 +1,79 @@
+﻿@model ClassroomPlatform.VIewModels.Classrooms.DetailsClassroomViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="classroom-main-title">
+    <div class="classroom-name">@Model.Classroom.Name</div>
+    <div class="mt-5">
+        <a>Add assigment</a>
+    </div>
+    <div><a href="#" data-toggle="modal" data-target="#addAnnouncementModal" id="addAnnouncement">Add announcement</a></div>
+</div>
+<div class="classroom-container">
+    <div class="upcoming-assigments">
+        <div class="upcoming-text">Upcoming</div>
+        <div>
+            @if (!Model.Classroom.Assigments.Any())
+            {
+                <div class="woohoo">Woohoo, no work due soon!</div>
+            }
+            else
+            {
+
+            }
+            <a href="#" class="view-all-assigments">View all</a>
+        </div>
+    </div>
+    <div class="classroom-stream">
+        @foreach (var announcement in Model.Classroom.Announcements)
+        {
+            <div class="item-stream">
+                <span style="font-weight: 600;">Ioan lemeni posted a new announcement: </span>
+                <span style="float:right;">@announcement.Date.ToShortDateString()</span>
+                <div style="font-size: 0.9rem;">@announcement.Content</div>
+            </div>
+        }
+    </div>
+</div>
+
+
+<form asp-controller="Announcement" asp-action="Add" asp-route-classroomId="@Model.Classroom.Id">
+    <div class="modal" tabindex="-1" role="dialog" id="addAnnouncementModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add annoucement</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="addAnnouncementContainer" class="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@section scripts{
+    <script>
+        function loadServerPartialView(container, baseUrl) {
+            return $.get(baseUrl, function (responseData) {
+                $(container).html(responseData);
+            });
+        }
+
+        $("#addAnnouncement").on("click", function () {
+            loadServerPartialView("#addAnnouncementContainer", "/Announcement/Add");
+        })
+
+        $("#nav-item-people").on("click", function () {
+            window.location = "/Classroom/People?id=" + "@Model.Classroom.Id";
+        });
+    </script>    
+}

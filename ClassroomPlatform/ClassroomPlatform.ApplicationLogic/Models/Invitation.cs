@@ -10,5 +10,16 @@ namespace ClassroomPlatform.ApplicationLogic.Models
         public EndUser EndUser { get; private set; }
         public Classroom Classroom { get; private set; }
         public InvitationStatus Status { get; private set; }
+
+        public static Invitation Create(EndUser endUser, Classroom classroom)
+        {
+            return new Invitation
+            {
+                Id = Guid.NewGuid(),
+                EndUser = endUser,
+                Classroom = classroom,
+                Status = InvitationStatus.None
+            };
+        }
     }
 }

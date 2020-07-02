@@ -7,5 +7,6 @@ namespace ClassroomPlatform.ApplicationLogic.Abstractions
 {
     public interface IInvitationRepository : IBaseRepository<Invitation>
     {
+        IEnumerable<Invitation> GetAllForUser(string userId);
     }
 }

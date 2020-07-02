@@ -1,0 +1,43 @@
+﻿@model ClassroomPlatform.VIewModels.Classrooms.PeopleClassroomViewModel
+@using ClassroomPlatform.VIewModels.Classrooms
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    ViewData["Title"] = "People";
+}
+
+    <div class="people-container">
+        <a asp-action="Invite" asp-route-id="@Model.Id" id="inviteButton" class="btn btn-secondary mb-4" style="color: white; cursor: pointer;">Invite participant</a>
+
+        <h2 class="mt-4 mb-3">Teachers</h2>
+        <div class="mb-3" style="border-bottom: 1px solid black; width: 70%;"></div>
+        <div class="mb-2 mt-2 ml-4">@Model.Classroom.Creator.FirstName @Model.Classroom.Creator.LastName</div>
+        <div style="border-bottom: 1px solid #e0dede; width: 70%;"></div>
+        @foreach (var people in Model.People)
+        {
+            var user = UserManager.FindByEmailAsync(people.Email).GetAwaiter().GetResult();
+            var role = UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
+            if (role[0] == "Teacher")
+            {
+                <div class="mb-2 mt-2 ml-4" style="color: #3c4043;">@people.FirstName @people.LastName</div>
+                <div style="border-bottom: 1px solid #e0dede; width: 70%;"></div>
+            }
+        }
+
+        <h2 class="mt-4 mb-3">Classmates</h2>
+        <div class="mb-3" style="border-bottom: 1px solid black; width: 70%;"></div>
+
+        @foreach (var people in Model.People)
+        {
+            var user = UserManager.FindByEmailAsync(people.Email).GetAwaiter().GetResult();
+            var role = UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
+            if (role[0] == "Student")
+            {
+                <div class="mb-2 mt-2 ml-4" style="color: #3c4043;">@people.FirstName @people.LastName</div>
+                <div style="border-bottom: 1px solid #e0dede; width: 70%;"></div>
+            }
+        }
+    </div>
+

@@ -1,0 +1,89 @@
+﻿@model ClassroomPlatform.VIewModels.Classrooms.ClassroomsForUserViewModel
+@using ClassroomPlatform.VIewModels.Classrooms
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<button class="btn btn-primary mb-3" data-target="#addClassroomModal" data-toggle="modal">Add Classroom</button>
+<button class="btn btn-primary mb-3 ml-3" data-target="#addGroupModal" data-toggle="modal">Add Group</button>
+
+
+<div class="d-flex flex-wrap">
+    @foreach (var invitation in Model.Invitations)
+    {
+        <div class="classroom">
+            <div class="header-classroom">
+                <a class="title-classroom">@invitation.Classroom.Name</a>
+                <div class="owner-name-classroom">@invitation.Classroom.Creator.FirstName  @invitation.Classroom.Creator.LastName</div>
+            </div>
+            <div class="body-classroom"></div>
+            <div class="footer-classroom">
+                <a asp-action="AcceptInvitation" asp-route-id="@invitation.Id" class="icon-container">
+                    <i class="fa fa-check-circle" style="font-size: 25px; color: green;"></i>
+                </a>
+                <a asp-action="AcceptInvitation" asp-route-id="@invitation.Id" class="icon-container">
+                    <i class="fa fa-ban" style="font-size: 25px; color: red;"></i>
+                </a>
+            </div>
+        </div>
+    }
+
+    @foreach (var classroom in Model.Classrooms)
+    {
+        <div class="classroom">
+            <div class="header-classroom">
+                <a asp-action="Details" asp-route-id="@classroom.Id" class="title-classroom">@classroom.Name</a>
+                <div class="owner-name-classroom">@classroom.Creator.FirstName  @classroom.Creator.LastName</div>
+            </div>
+            <div class="body-classroom"></div>
+            <div class="footer-classroom">
+                <div class="icon-container"><i class="fa fa-file-o" style="font-size: 25px;"></i></div>
+                <div class="icon-container"><i class="fa fa-group" style="font-size: 25px;"></i></div>
+            </div>
+        </div>
+    }
+</div>
+
+<form asp-action="Add">
+    <div class="modal" tabindex="-1" role="dialog" id="addClassroomModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Classroom</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body"><partial name="_AddClassroom" model="new AddClassroomViewModel { }"/></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<form asp-controller="Group" asp-action="Add">
+    <div class="modal" tabindex="-1" role="dialog" id="addGroupModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Group</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body"><partial name="_AddClassroom" model="new AddClassroomViewModel { }" /></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+

@@ -36,6 +36,12 @@ namespace ClassroomPlatform.ApplicationLogic.Services
             return this.classroomRepository.Add(classroomToAdd);
         }
 
+        public IEnumerable<Classroom> GetAllForUser(string userId)
+        {
+            var endUserDb = this.endUserRepository.GetByUserId(userId);
+            return this.classroomRepository.GetAllForUser(endUserDb.Id);
+        }
+
         public Assigment AddAssigment(string teacherId,
                                       Guid classroomId,
                                       DateTime deadline,
@@ -53,15 +59,24 @@ namespace ClassroomPlatform.ApplicationLogic.Services
 
         public Announcement AddAnnouncement(string teacherId,
                                             Guid classroomId,
-                                            DateTime date,
                                             string content)
         {
             var classroomDb = GetById(classroomId);
             var teacherDb = this.endUserRepository.GetByUserId(teacherId);
 
-            var announcementToAdd = Announcement.Create(teacherDb, date, content);
+            var announcementToAdd = Announcement.Create(teacherDb, content);
             classroomDb.AddAnnoncement(announcementToAdd);
             return this.announcementRepository.Add(announcementToAdd);
+        }
+
+        public IEnumerable<EndUser> GetPeopleForClassroom(Guid id)
+        {
+            var people = new List<EndUser>();
+            foreach (var item in this.classroomRepository.GetAllEndUserClassrooms(id))
+            {
+                people.Add(item.EndUser);
+            }
+            return people;
         }
     }
 }

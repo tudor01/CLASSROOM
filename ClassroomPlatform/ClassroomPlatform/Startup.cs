@@ -12,6 +12,10 @@ using ClassroomPlatform.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ClassroomPlatform.ApplicationLogic.Services;
+using ClassroomPlatform.ApplicationLogic.Abstractions;
+using ClassroomPlatform.DataAccess.Repositories;
+using ClassroomPlatform.DataAccess;
 
 namespace ClassroomPlatform
 {
@@ -30,8 +34,24 @@ namespace ClassroomPlatform
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDbContext<ClassroomPlatformDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection1")));
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false).AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddScoped<IAnnouncementRepository, EFAnnouncementRepository>();
+            services.AddScoped<IAssigmentRepository, EFAssigmentRepository>();
+            services.AddScoped<IEndUserRepository, EFEndUserRepository>();
+            services.AddScoped<IClassroomRepository, EFClassroomRepository>();
+            services.AddScoped<IGradeRepository, EFGradeRepository>();
+            services.AddScoped<IGroupRepository, EFGroupRepository>();
+            services.AddScoped<IInvitationRepository, EFInvitationRepository>();
+
+            services.AddScoped<GroupService>();
+            services.AddScoped<EndUserService>();
+            services.AddScoped<ClassroomService>();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

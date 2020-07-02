@@ -10,5 +10,15 @@ namespace ClassroomPlatform.ApplicationLogic.Models
         public Classroom Classroom { get; private set; }
         public EndUser EndUser { get; private set; }
         public EndUserClassroomRole Role { get; private set; }
+
+        public static EndUserClassroom Create(EndUser endUser, Classroom classroom)
+        {
+            return new EndUserClassroom
+            {
+                Id = Guid.NewGuid(),
+                EndUser = endUser,
+                Classroom = classroom
+            };
+        }
     }
 }

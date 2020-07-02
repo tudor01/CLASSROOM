@@ -10,13 +10,13 @@ namespace ClassroomPlatform.ApplicationLogic.Models
         public DateTime Date { get; private set; }
         public string Content { get; private set; }
 
-        public static Announcement Create(EndUser creator, DateTime date, string content)
+        public static Announcement Create(EndUser creator, string content)
         {
             return new Announcement
             {
                 Id = Guid.NewGuid(),
                 Creator = creator,
-                Date = date,
+                Date = DateTime.UtcNow,
                 Content = content
             };
         }

@@ -1,0 +1,30 @@
+﻿@model ClassroomPlatform.VIewModels.Classrooms.InviteParticipantViewModel
+
+@{
+    ViewData["Title"] = "Invite";
+}
+
+<h3>Invite participant</h3>
+
+<form asp-action="Invite">
+    <input type="hidden" asp-for="Id"/>
+    <input type="hidden" asp-for="DoesEmailExists"/>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div id="emailDoesNotExists" style="font-size:0.8rem; color: red; display: none; margin-bottom: 0.5rem;">
+        @Model.Email does not match with a user
+    </div>
+    <input type="submit" value="Invite" class="btn btn-secondary"/>
+</form>
+
+@section scripts{ 
+    <script>
+        @if (Model.DoesEmailExists == false)
+        {
+            @: $("#emailDoesNotExists").css("display", "block");
+        }
+    </script>
+}
