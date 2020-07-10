@@ -2,6 +2,7 @@
 using ClassroomPlatform.ApplicationLogic.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ClassroomPlatform.ApplicationLogic.Services
@@ -12,16 +13,19 @@ namespace ClassroomPlatform.ApplicationLogic.Services
         private readonly IAnnouncementRepository announcementRepository;
         private readonly IAssigmentRepository assigmentRepository;
         private readonly IEndUserRepository endUserRepository;
+        private readonly IGradeRepository gradeRepository;
 
         public ClassroomService(IClassroomRepository classroomRepository,
                                 IAnnouncementRepository announcementRepository,
                                 IAssigmentRepository assigmentRepository,
-                                IEndUserRepository endUserRepository)
+                                IEndUserRepository endUserRepository,
+                                IGradeRepository gradeRepository)
         {
             this.classroomRepository = classroomRepository;
             this.announcementRepository = announcementRepository;
             this.assigmentRepository = assigmentRepository;
             this.endUserRepository = endUserRepository;
+            this.gradeRepository = gradeRepository;
         }
 
         public Classroom GetById(Guid classroomId)
@@ -34,6 +38,12 @@ namespace ClassroomPlatform.ApplicationLogic.Services
             var endUserDb = this.endUserRepository.GetByUserId(creatorId);
             var classroomToAdd = Classroom.Create(name, endUserDb);
             return this.classroomRepository.Add(classroomToAdd);
+        }
+
+        public Assigment GetAssigment(Guid classroomId, Guid assigmentId)
+        {
+            var classroomDb = classroomRepository.GetById(classroomId);
+            return classroomDb.Assigments.Where(assigment => assigment.Id == assigmentId).SingleOrDefault();
         }
 
         public IEnumerable<Classroom> GetAllForUser(string userId)
@@ -52,9 +62,16 @@ namespace ClassroomPlatform.ApplicationLogic.Services
             var classroomDb = GetById(classroomId);
             var teacherDb = this.endUserRepository.GetByUserId(teacherId);
 
-            var assigmentToAdd = Assigment.Create(teacherDb, deadline, date, content, title);
+            var assigmentToAdd = Assigment.Create(teacherDb, deadline, date, content, title, CreateEndUserGradeList(classroomId));
             classroomDb.AddAssigment(assigmentToAdd);
             return this.assigmentRepository.Add(assigmentToAdd);
+        }
+
+        public void AddWorkForAssigment(string work, Guid assigmentId, string userId)
+        {
+            var endUserGradeDb = endUserRepository.GetEndUserGrade(assigmentId, userId);
+            endUserGradeDb.UpdateWork(work);
+            endUserRepository.UpdateEndUserGrade(endUserGradeDb);
         }
 
         public Announcement AddAnnouncement(string teacherId,
@@ -77,6 +94,22 @@ namespace ClassroomPlatform.ApplicationLogic.Services
                 people.Add(item.EndUser);
             }
             return people;
+        }
+
+        private List<EndUserGrade> CreateEndUserGradeList(Guid classroomId)
+        {
+            var endUserGradeList = new List<EndUserGrade>();
+            var gradeList = new List<Grade>();
+            foreach (var endUser in classroomRepository.GetAllEndUserClassrooms(classroomId))
+            {
+                var grade = Grade.Create();
+                gradeList.Add(grade);
+                var endUserGrade = EndUserGrade.Create(endUser.EndUser, grade);
+                endUserGradeList.Add(endUserGrade);
+            }
+            gradeRepository.AddMultipleGrades(gradeList);
+            endUserRepository.AddMultipleEndUserGrades(endUserGradeList);
+            return endUserGradeList;
         }
     }
 }

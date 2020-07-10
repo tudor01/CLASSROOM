@@ -19,13 +19,13 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Home">Stream</a>
+                        <li class="nav-item nav-item-classroom">
+                            <a id="nav-item-stream" class="nav-link text-dark" href="#">Stream</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Home">Classwork</a>
+                        <li class="nav-item nav-item-classroom">
+                            <a id="nav-item-classwork" class="nav-link text-dark" href="#" >Classwork</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item nav-item-classroom">
                             <a id="nav-item-people" class="nav-link text-dark" href="#">People</a>
                         </li>
                         @if (User.IsInRole("Administrator"))
@@ -55,8 +55,8 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
-        if (window.location.pathname == '/Classroom') {
-            $(".nav-item").css("display", "none");
+        if (window.location.pathname == '/Classroom' || (window.location.pathname.includes("Classroom") == false && window.location.pathname.includes("Assigment") == false)) {
+            $(".nav-item-classroom").css("display", "none");
         }
     </script>
     @RenderSection("Scripts", required: false)

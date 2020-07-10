@@ -8,5 +8,15 @@ namespace ClassroomPlatform.ApplicationLogic.Models
     {
         public int Score { get; private set; }
         public int TotalScore { get; private set; }
+
+        public static Grade Create()
+        {
+            return new Grade
+            {
+                Id = Guid.NewGuid(),
+                Score = -1,
+                TotalScore = 100
+            };
+        }
     }
 }

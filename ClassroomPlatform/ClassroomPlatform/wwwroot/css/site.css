@@ -127,6 +127,15 @@ body {
         background: #edebe6;
     }
 
+.add-work {
+    color: #17a2b8 !important;
+    width: 80%;
+    margin-left: 2rem;
+}
+
+.add-work:hover{
+    color: white !important;
+}
 
 .folder {
     width: 300px;
@@ -189,10 +198,21 @@ body {
     cursor: pointer;
 }
 
-.item-stream {
-    width: 45rem;
+.item-stream-classwork {
+    width: 60rem;
     min-height: 4.5rem;
-    margin-left: 2rem;
+    margin-left: 5rem;
+    border-radius: 0.8rem;
+    border: .0625rem solid #dadce0;
+    cursor: pointer;
+    padding: 1.3rem;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.item-stream {
+    width: 60rem;
+    min-height: 4.5rem;
     border-radius: 0.8rem;
     border: .0625rem solid #dadce0;
     cursor: pointer;

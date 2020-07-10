@@ -4,14 +4,16 @@ using ClassroomPlatform.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClassroomPlatform.DataAccess.Migrations
 {
     [DbContext(typeof(ClassroomPlatformDbContext))]
-    partial class ClassroomPlatformDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200709103849_Work")]
+    partial class Work
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

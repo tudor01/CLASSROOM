@@ -123,5 +123,14 @@ namespace ClassroomPlatform.Controllers
             endUserService.DeclineInvitation(id);
             return RedirectToAction("Index");
         }
+
+        public IActionResult ClassWork(Guid id)
+        {
+            var viewModel = new DetailsClassroomViewModel
+            {
+                Classroom = classroomService.GetById(id)
+            };
+            return View(viewModel);
+        }
     }
 }

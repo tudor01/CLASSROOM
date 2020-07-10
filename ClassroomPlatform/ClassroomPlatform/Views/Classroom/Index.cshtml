@@ -7,9 +7,10 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<button class="btn btn-primary mb-3" data-target="#addClassroomModal" data-toggle="modal">Add Classroom</button>
-<button class="btn btn-primary mb-3 ml-3" data-target="#addGroupModal" data-toggle="modal">Add Group</button>
-
+@if (User.IsInRole("Teacher"))
+{
+    <button style="background: grey; color: white;" class="btn mb-2" data-target="#addClassroomModal" data-toggle="modal">Add classroom</button>
+}
 
 <div class="d-flex flex-wrap">
     @foreach (var invitation in Model.Invitations)
@@ -40,8 +41,8 @@
             </div>
             <div class="body-classroom"></div>
             <div class="footer-classroom">
-                <div class="icon-container"><i class="fa fa-file-o" style="font-size: 25px;"></i></div>
-                <div class="icon-container"><i class="fa fa-group" style="font-size: 25px;"></i></div>
+                <div class="icon-container"><a style="color: grey;" asp-action="Classwork" asp-route-id="@classroom.Id"><i class="fa fa-file-o" style="font-size: 25px;"></i></a></div>
+                <div class="icon-container"><a style="color: grey;" asp-action="People" asp-route-id="@classroom.Id"><i class="fa fa-group" style="font-size: 25px;"></i></a></div>
             </div>
         </div>
     }

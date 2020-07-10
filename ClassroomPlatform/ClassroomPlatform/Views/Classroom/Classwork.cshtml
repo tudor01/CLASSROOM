@@ -1,0 +1,35 @@
+﻿@model ClassroomPlatform.VIewModels.Classrooms.DetailsClassroomViewModel
+
+@{
+    ViewData["Title"] = "Classwork";
+}
+
+<h2 style="margin: 2rem 0 1.5rem 5rem; ">Classwork: </h2>
+<div class="classroom-stream">
+    @foreach (var assigment in Model.Classroom.Assigments)
+    {
+        <a style="text-decoration: none;" asp-controller="Assigment" asp-action="Details" asp-route-classroomId="@Model.Classroom.Id" asp-route-assigmentId="@assigment.Id">
+            <div class="item-stream-classwork">
+                <img src="~/assigment.png" class="rounded-circle" style="width: 30px; height: 30px;" />
+                <span style="color: black; font-weight: 600;">@assigment.Title</span>
+                <span style="color: black; float:right;">Due @assigment.Deadline.ToLongDateString()</span>
+            </div>
+        </a>
+            }
+    </div>
+
+@section scripts{ 
+    <script>
+        $("#nav-item-people").on("click", function () {
+            window.location = "/Classroom/People?id=" + "@Model.Classroom.Id";
+        });
+
+        $("#nav-item-stream").on("click", function () {
+            window.location = "/Classroom/Details?id=" + "@Model.Classroom.Id";
+        });
+
+        $("#nav-item-classwork").on("click", function () {
+            window.location = "/Classroom/Classwork?id=" + "@Model.Classroom.Id";
+        });
+    </script>
+}

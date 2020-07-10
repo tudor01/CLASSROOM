@@ -12,6 +12,12 @@ namespace ClassroomPlatform.DataAccess.Repositories
         {
         }
 
+        public void AddMultipleGrades(List<Grade> gradeList)
+        {
+            dbContext.Grades.AddRange(gradeList);
+            dbContext.SaveChanges();
+        }
+
         public EndUserGrade UpdateEndUserGrade(EndUserGrade endUserGrade)
         {
             this.dbContext.EndUserGrades.Update(endUserGrade);

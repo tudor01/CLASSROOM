@@ -1,0 +1,140 @@
+﻿@model ClassroomPlatform.VIewModels.Assigments.AssigmentViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+@if (User.IsInRole("Student"))
+{
+<div class="row">
+    <div class="col-8">
+        <div style="color: red;">Due @Model.Assigment.Deadline.ToLongDateString()</div>
+        <div>
+            <span style="font-size: 2.5rem;">@Model.Assigment.Title</span>
+            <span style="float: right;">@Model.EndUserGrade.Grade.TotalScore points</span>
+        </div>
+        <div>Posted on @Model.Assigment.Date.ToLongDateString()</div>
+        <div style="width: 100%; border-top: 1px solid grey; margin: 1rem 0;"></div>
+        <div>@Model.Assigment.Content</div>
+    </div>
+    <div class="col-4">
+        <div style="border-radius: 10px; border: 5px grey; width: 21rem; height: 11rem; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+            <div style="font-size: 1.6rem; padding: 2rem 1.5rem;">
+                <span>Your work:</span>
+                @if (Model.EndUserGrade.Work == null)
+                {
+                    <span style="margin-top: 0.25rem; font-size: 1.2rem; float: right; color: red;">Missing</span>
+                }
+                else
+                {
+                    <span style="margin-top: 0.25rem; font-size: 1.2rem; float: right; color: green;">Delivered</span>
+                }
+            </div>
+            <a id="addWorkAssigment" data-target="#addWorkAssigmentModal" data-toggle="modal" class="btn btn-outline-info add-work" style="cursor: pointer;">Add work</a>
+        </div>
+    </div>
+</div>
+}
+else
+{
+<div>
+    <div style="color: red;">Due @Model.Assigment.Deadline.ToLongDateString()</div>
+    <div>
+        <span style="font-size: 2.5rem;">@Model.Assigment.Title</span>
+    </div>
+    <div>Posted on @Model.Assigment.Date.ToLongDateString()</div>
+    <div style="width: 100%; border-top: 1px solid grey; margin: 1rem 0;"></div>
+    <div>@Model.Assigment.Content</div>
+</div>
+
+<table class="table table-bordered" style="margin-top: 2rem;">
+    <thead>
+        <tr>
+            <th scope="col">Student</th>
+            <th scope="col">Work</th>
+            <th style="width: 150px;">Grade</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model.Students)
+        {
+        <tr>
+            <th>@student.EndUser.FirstName @student.EndUser.LastName</th>
+            @if (student.Work == null)
+            {
+                <td style="color: red;">Missing</td>
+            }
+            else
+            {
+                <td><a href="@student.Work">@student.Work</a></td>
+            }
+            @if (student.Grade.Score == -1)
+            {
+                <td style="display: flex;">
+                    <input class="form-control" value="0"/>
+                </td>
+            }
+            else
+            {
+                <td style="display: flex;">
+                    <input class="form-control" value="@student.Grade.Score" />
+                </td>
+            }
+        </tr>
+        }
+    </tbody>
+</table>
+}
+
+
+
+<form asp-controller="Assigment" asp-action="AddWork" asp-route-assigmentId="@Model.Assigment.Id" asp-route-classroomId="@Model.ClassroomId">
+    <div class="modal" tabindex="-1" role="dialog" id="addWorkAssigmentModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add work</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="addWorkAssigmentContainer" class="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@section scripts{
+    <script>
+    function loadServerPartialView(container, baseUrl) {
+            return $.get(baseUrl, function (responseData) {
+                $(container).html(responseData);
+            });
+        }
+
+    $("#addWorkAssigment").on("click", function () {
+            loadServerPartialView("#addWorkAssigmentContainer", "/Assigment/AddWork");
+        })
+
+    $("#nav-item-people").on("click", function () {
+            window.location = "/Classroom/People?id=" + "@Model.ClassroomId";
+        });
+
+        $("#nav-item-stream").on("click", function () {
+            window.location = "/Classroom/Details?id=" + "@Model.ClassroomId";
+        });
+
+        $("#nav-item-classwork").on("click", function () {
+            window.location = "/Classroom/Classwork?id=" + "@Model.ClassroomId";
+        });
+    </script>
+}

@@ -6,31 +6,39 @@
 
 <div class="classroom-main-title">
     <div class="classroom-name">@Model.Classroom.Name</div>
-    <div class="mt-5">
-        <a>Add assigment</a>
-    </div>
-    <div><a href="#" data-toggle="modal" data-target="#addAnnouncementModal" id="addAnnouncement">Add announcement</a></div>
+    @if (User.IsInRole("Teacher"))
+    {
+        <div class="mt-5">
+            <a href="#" data-toggle="modal" data-target="#addAssigmentModal" id="addAssigment">Add assigment</a>
+        </div>
+        <div><a href="#" data-toggle="modal" data-target="#addAnnouncementModal" id="addAnnouncement">Add announcement</a></div>
+    }
 </div>
 <div class="classroom-container">
-    <div class="upcoming-assigments">
-        <div class="upcoming-text">Upcoming</div>
-        <div>
-            @if (!Model.Classroom.Assigments.Any())
-            {
-                <div class="woohoo">Woohoo, no work due soon!</div>
-            }
-            else
-            {
-
-            }
-            <a href="#" class="view-all-assigments">View all</a>
-        </div>
-    </div>
     <div class="classroom-stream">
+        @foreach (var assigment in Model.Classroom.Assigments)
+        {
+        <a style="text-decoration: none;" asp-controller="Assigment" asp-action="Details" asp-route-classroomId="@Model.Classroom.Id" asp-route-assigmentId="@assigment.Id">
+            <div class="item-stream">
+                <img src="~/assigment.png" class="rounded-circle" style="width: 30px; height: 30px;" />
+                <span style="color: black; font-weight: 600 !important;">@assigment.Creator.FirstName @assigment.Creator.LastName posted a new assigment: </span>
+                <span style="color: black; float:right;">@assigment.Date.ToShortDateString()</span>
+                @if (assigment.Content.Length > 75)
+                {
+                    var assigmentContent = assigment.Content.Substring(0, 72) + "...";
+                    <div style="color: black; font-size: 0.9rem;">@assigmentContent</div>
+                }
+                else
+                {
+                    <div style="color: black; font-size: 0.9rem;">@assigment.Content</div>
+                }
+            </div>
+        </a>
+        }
         @foreach (var announcement in Model.Classroom.Announcements)
         {
             <div class="item-stream">
-                <span style="font-weight: 600;">Ioan lemeni posted a new announcement: </span>
+                <span style="font-weight: 600;">@announcement.Creator.FirstName @announcement.Creator.LastName posted a new announcement: </span>
                 <span style="float:right;">@announcement.Date.ToShortDateString()</span>
                 <div style="font-size: 0.9rem;">@announcement.Content</div>
             </div>
@@ -59,6 +67,26 @@
     </div>
 </form>
 
+<form asp-controller="Assigment" asp-action="Add" asp-route-classroomId="@Model.Classroom.Id">
+    <div class="modal" tabindex="-1" role="dialog" id="addAssigmentModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add assigment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="addAssigmentContainer" class="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
 
 @section scripts{
     <script>
@@ -72,8 +100,20 @@
             loadServerPartialView("#addAnnouncementContainer", "/Announcement/Add");
         })
 
+        $("#addAssigment").on("click", function () {
+            loadServerPartialView("#addAssigmentContainer", "/Assigment/Add");
+        })
+
         $("#nav-item-people").on("click", function () {
             window.location = "/Classroom/People?id=" + "@Model.Classroom.Id";
         });
-    </script>    
+
+        $("#nav-item-stream").on("click", function () {
+            window.location = "/Classroom/Details?id=" + "@Model.Classroom.Id";
+        });
+
+        $("#nav-item-classwork").on("click", function () {
+            window.location = "/Classroom/Classwork?id=" + "@Model.Classroom.Id";
+        });
+    </script>
 }

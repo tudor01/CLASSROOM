@@ -8,36 +8,51 @@
     ViewData["Title"] = "People";
 }
 
-    <div class="people-container">
+<div class="people-container">
+    @if (User.IsInRole("Teacher"))
+    {
         <a asp-action="Invite" asp-route-id="@Model.Id" id="inviteButton" class="btn btn-secondary mb-4" style="color: white; cursor: pointer;">Invite participant</a>
+    }
 
-        <h2 class="mt-4 mb-3">Teachers</h2>
-        <div class="mb-3" style="border-bottom: 1px solid black; width: 70%;"></div>
-        <div class="mb-2 mt-2 ml-4">@Model.Classroom.Creator.FirstName @Model.Classroom.Creator.LastName</div>
-        <div style="border-bottom: 1px solid #e0dede; width: 70%;"></div>
-        @foreach (var people in Model.People)
+    <h2 class="mt-4 mb-3">Teachers</h2>
+    <div class="mb-3" style="border-bottom: 1px solid black; width: 70%;"></div>
+    <div class="mb-2 mt-2 ml-4">@Model.Classroom.Creator.FirstName @Model.Classroom.Creator.LastName</div>
+    <div style="border-bottom: 1px solid #e0dede; width: 70%;"></div>
+    @foreach (var people in Model.People)
+    {
+        var user = UserManager.FindByEmailAsync(people.Email).GetAwaiter().GetResult();
+        var role = UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
+        if (role[0] == "Teacher")
         {
-            var user = UserManager.FindByEmailAsync(people.Email).GetAwaiter().GetResult();
-            var role = UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
-            if (role[0] == "Teacher")
-            {
-                <div class="mb-2 mt-2 ml-4" style="color: #3c4043;">@people.FirstName @people.LastName</div>
-                <div style="border-bottom: 1px solid #e0dede; width: 70%;"></div>
-            }
+            <div class="mb-2 mt-2 ml-4" style="color: #3c4043;">@people.FirstName @people.LastName</div>
+            <div style="border-bottom: 1px solid #e0dede; width: 70%;"></div>
         }
+    }
 
-        <h2 class="mt-4 mb-3">Classmates</h2>
-        <div class="mb-3" style="border-bottom: 1px solid black; width: 70%;"></div>
+    <h2 class="mt-4 mb-3">Classmates</h2>
+    <div class="mb-3" style="border-bottom: 1px solid black; width: 70%;"></div>
 
-        @foreach (var people in Model.People)
+    @foreach (var people in Model.People)
+    {
+        var user = UserManager.FindByEmailAsync(people.Email).GetAwaiter().GetResult();
+        var role = UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
+        if (role[0] == "Student")
         {
-            var user = UserManager.FindByEmailAsync(people.Email).GetAwaiter().GetResult();
-            var role = UserManager.GetRolesAsync(user).GetAwaiter().GetResult();
-            if (role[0] == "Student")
-            {
-                <div class="mb-2 mt-2 ml-4" style="color: #3c4043;">@people.FirstName @people.LastName</div>
-                <div style="border-bottom: 1px solid #e0dede; width: 70%;"></div>
-            }
+            <div class="mb-2 mt-2 ml-4" style="color: #3c4043;">@people.FirstName @people.LastName</div>
+            <div style="border-bottom: 1px solid #e0dede; width: 70%;"></div>
         }
-    </div>
+    }
+</div>
 
+@section scripts{
+<script>
+    $("#nav-item-stream").on("click", function () {
+        window.location = "/Classroom/Details?id=" + "@Model.Classroom.Id";
+    });
+
+     $("#nav-item-classwork").on("click", function () {
+            window.location = "/Classroom/Classwork?id=" + "@Model.Classroom.Id";
+        });
+    </script>    
+
+}

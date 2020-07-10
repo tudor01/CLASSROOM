@@ -57,6 +57,11 @@ namespace ClassroomPlatform.ApplicationLogic.Services
             return this.invitationRepository.Add(invitationToAdd);
         }
 
+        public EndUserGrade GetEndUserGrade(Guid assigmentId, string userId)
+        {
+            return endUserRepository.GetEndUserGrade(assigmentId, userId);
+        }
+
         public void AcceptInvitation(Guid id)
         {
             var invitationDb = invitationRepository.GetById(id);
@@ -68,6 +73,11 @@ namespace ClassroomPlatform.ApplicationLogic.Services
         public void DeclineInvitation(Guid id)
         {
             this.invitationRepository.Remove(id);
+        }
+
+        public IEnumerable<EndUserGrade> GetStudents(Guid assigmentId)
+        {
+            return endUserRepository.GetStudents(assigmentId);
         }
     }
 }

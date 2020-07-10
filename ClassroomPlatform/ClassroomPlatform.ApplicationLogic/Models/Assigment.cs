@@ -17,7 +17,8 @@ namespace ClassroomPlatform.ApplicationLogic.Models
                                        DateTime deadline,
                                        DateTime date,
                                        string content,
-                                       string title)
+                                       string title,
+                                       List<EndUserGrade> endUserGrades)
         {
             return new Assigment
             {
@@ -27,7 +28,7 @@ namespace ClassroomPlatform.ApplicationLogic.Models
                 Date = date,
                 Content = content,
                 Title = title,
-                EndUserGrades = new List<EndUserGrade>()
+                EndUserGrades = endUserGrades
             };
         }
 

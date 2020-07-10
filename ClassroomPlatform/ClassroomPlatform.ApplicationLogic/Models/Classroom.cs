@@ -36,5 +36,10 @@ namespace ClassroomPlatform.ApplicationLogic.Models
             this.Announcements.Add(announcement);
             return announcement;
         }
+
+        internal Assigment Where()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

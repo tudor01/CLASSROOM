@@ -41,6 +41,5 @@ namespace ClassroomPlatform.Controllers
                 return BadRequest(e.Message);
             }
         }
-
     }
 }
